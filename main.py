@@ -13,7 +13,7 @@ else:
 
 userinput = ""
 
-while userinput != "exit":
+while userinput.lower() != "exit":
     userinput = input()
     wordsInUserInput = userinput.split()
     command = wordsInUserInput[0].lower()
@@ -27,7 +27,7 @@ while userinput != "exit":
         taskDescription = userinput[3:].strip().replace('"', "")
         creationTime = str(datetime.now())
 
-        tasks[taskID] = {"description": taskDescription, "status": "todo", "createdAt": creationTime, "updatedAt": creationTime}
+        tasks[str(taskID)] = {"description": taskDescription, "status": "todo", "createdAt": creationTime, "updatedAt": creationTime}
 
         with open("tasks.json", "w") as jsonfile:
             json.dump(tasks, jsonfile, indent=4)
@@ -39,10 +39,12 @@ while userinput != "exit":
         if len(wordsInUserInput) > 2:
             possibleID = wordsInUserInput[1]
             possibleNewName = (" ".join(wordsInUserInput[2:])).replace('"', "")
-        try:
-            tasks[possibleID]["description"] = possibleNewName
-            with open("tasks.json", "w") as jsonfile:
-                json.dump(tasks, jsonfile, indent=4)
-            print("Updated ID " + possibleID + ' to "' + possibleNewName + '"')
-        except:
-            print("ID does not exist or no name was given")
+            try:
+                tasks[possibleID]["description"] = possibleNewName
+                with open("tasks.json", "w") as jsonfile:
+                    json.dump(tasks, jsonfile, indent=4)
+                print("Updated ID " + possibleID + ' to "' + possibleNewName + '"')
+            except:
+                print("ID does not exist or no name was given")
+        else:
+            print("An index and the name of what you're going to update the task to is needed to update a task")
