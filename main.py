@@ -47,7 +47,7 @@ while userinput.lower() != "exit":
             except:
                 print("ID does not exist or no name was given")
         else:
-            print("An index and the name of what you're going to update the task to is needed to update a task")
+            print("An ID and the name of what you're going to update the task to is needed to update a task")
     elif command == "delete":
         if len(wordsInUserInput) > 1:
             possibleID = wordsInUserInput[1]
@@ -60,4 +60,15 @@ while userinput.lower() != "exit":
             except:
                 print("Index does not exist")
         else:
-            print("An index is needed to delete a task")
+            print("An ID is needed to delete a task")
+    elif command[:4] == "mark":
+        if len(wordsInUserInput) > 1:
+            possibleID = wordsInUserInput[1]
+            try:
+                tasks[possibleID]["status"] = command[5:]
+                with open("tasks.json", "w") as jsonfile:
+                    json.dump(tasks, jsonfile, indent=4)
+            except:
+                print("ID does not exist")
+        else:
+            print("An ID is needed to mark a task in progress, done, or another status")
