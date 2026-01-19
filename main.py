@@ -11,6 +11,13 @@ else:
     with open("tasks.json", "r") as jsonfile:
         tasks = json.load(jsonfile)
 
+def printTaskInfo(task):
+    print("\nID: " + str(task[0]))
+    print("Description: " + task[1]["description"])
+    print("Status: " + task[1]["status"])
+    print("Created at: " + task[1]["createdAt"])
+    print("Last updated at: " + task[1]["updatedAt"])
+
 userinput = ""
 
 while userinput.lower() != "exit":
@@ -41,6 +48,7 @@ while userinput.lower() != "exit":
             possibleNewName = (" ".join(wordsInUserInput[2:])).replace('"', "")
             try:
                 tasks[possibleID]["description"] = possibleNewName
+                tasks[possibleID]["updatedAt"] = str(datetime.now())
                 with open("tasks.json", "w") as jsonfile:
                     json.dump(tasks, jsonfile, indent=4)
                 print("Updated ID " + possibleID + ' to "' + possibleNewName + '"')
@@ -72,3 +80,12 @@ while userinput.lower() != "exit":
                 print("ID does not exist")
         else:
             print("An ID is needed to mark a task in progress, done, or another status")
+    elif command == "list":
+        if len(wordsInUserInput) > 1:
+            possibleStatus = wordsInUserInput[1]
+            for i in list(tasks.items()):
+                if i[1]["status"] == possibleStatus:
+                    printTaskInfo(i)
+        else:
+            for i in list(tasks.items()):
+                printTaskInfo(i)
